@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "outDir": "./dist/",
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "allowJs": false,
+    "noEmit": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "baseUrl": "./src",
+    "module": "es6",
+    "alwaysStrict": true,
+    "allowUnreachableCode": false
+  },
+  "plugins": [
+    {
+      "transform": "typescript-plugin-styled-components",
+      "type": "config",
+      "minify": true,
+      "ssr": true
+    }
+  ],
+  "exclude": ["node_modules"]
+}
