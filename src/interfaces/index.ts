@@ -12,5 +12,5 @@ export interface IMovie {
   title: string
   video: boolean
   vote_avarage: number
-  vore_count: number
+  vote_count: number
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, fireEvent, act } from '@testing-library/react'
+import { render, fireEvent, wait } from '@testing-library/react'
 import App from './App'
 
 describe('Movie DB App', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     window.fetch = jest.fn().mockImplementation(url => {
       if (url.indexOf('/search/movie') !== -1) {
         return Promise.resolve({
@@ -27,30 +27,16 @@ describe('Movie DB App', () => {
       })
     })
   })
-  afterEach(() => delete window.fetch)
+  afterAll(() => delete window.fetch)
   test('should return the movies that user searched for', async () => {
-    const { getByTestId, queryByTestId } = render(<App />)
-
-    await act(() => {
-      fireEvent.change(getByTestId('searchMovie'), {
-        target: { value: 'Mat' }
-      })
+    const { getByTestId, findByText } = render(<App />)
+    fireEvent.change(getByTestId('searchMovie'), {
+      target: { value: 'Mat' }
     })
+    fireEvent.click(getByTestId('getMovie'))
 
-    const movie = await queryByTestId('movie-603') //add the ID of the first Matrix movie
+    const movie = await findByText('The Matrix')
 
     expect(movie).toBeInTheDocument()
-  })
-
-  test('should not return any movie', async () => {
-    const { getByTestId, queryByTestId } = render(<App />)
-
-    act(() => {
-      fireEvent.change(getByTestId('searchMovie'), {
-        target: { value: 'Ma' }
-      })
-    })
-
-    expect(await queryByTestId('movie-603')).toBe(null)
   })
 })
